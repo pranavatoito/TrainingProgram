@@ -1,7 +1,5 @@
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Chip from "@mui/material/Chip";
 import CircleIcon from "@mui/icons-material/Circle";
-import { useEffect, useState } from "react";
 import "./CSS/table.css";
 
 function Tabel({ headers, data, pageData, setData, buttons }) {

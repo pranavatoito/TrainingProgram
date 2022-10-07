@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -23,7 +23,6 @@ const EditButton = ({ id }) => {
   );
 };
 const DeleteButton = ({ id, setRowData, rowData }) => {
-  const navigate = useNavigate();
   const [deleteLoading, setDeleteLoading] = useState(false);
   const handleDelete = () => {
     console.log("deleteing", id);
