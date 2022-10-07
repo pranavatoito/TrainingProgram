@@ -10,13 +10,21 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import { joiResolver } from "@hookform/resolvers/joi";
+import userSchema from "../utilities/schema/user";
 
 const User = ({ onSubmit, defaultValues, title, loading }) => {
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    resolver: joiResolver(userSchema),
     defaultValues,
   });
-
+  console.log(errors);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack
@@ -32,7 +40,15 @@ const User = ({ onSubmit, defaultValues, title, loading }) => {
         <Controller
           name="name"
           control={control}
-          render={({ field }) => <TextField {...field} label="Name" variant="outlined" />}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Name"
+              variant="outlined"
+              error={errors?.name ? true : false}
+              helperText={errors?.name?.message}
+            />
+          )}
         />
         <Controller
           name="dob"
@@ -42,7 +58,13 @@ const User = ({ onSubmit, defaultValues, title, loading }) => {
               <DatePicker
                 label="Date of Birth"
                 {...field}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={errors?.dob ? true : false}
+                    helperText={errors?.dob?.message}
+                  />
+                )}
               />
             </LocalizationProvider>
           )}
@@ -69,7 +91,7 @@ const User = ({ onSubmit, defaultValues, title, loading }) => {
             type="submit"
             variant="contained"
             sx={{ width: "min(150px,40vw)", margin: "5px" }}
-            disabled={loading}
+            disabled={loading || Boolean(Object.keys(errors).length)}
             endIcon={loading ? <CircularProgress size={20} /> : null}
           >
             {loading ? "Saving" : "Save"}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UsersTable from "../Components/UsersTable";
+import TableLoading from "../utilities/Skeleton/TableLoading";
 
 function Users() {
   const [data, setData] = useState();
@@ -11,8 +12,9 @@ function Users() {
   }, []);
   if (data) {
     return <UsersTable data={data} />;
+    // return <TableLoading />;
   } else {
-    return null;
+    return <TableLoading />;
   }
 }
 

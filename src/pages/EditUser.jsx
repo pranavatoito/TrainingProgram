@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import UserForm from "../Components/UserForm";
 import { useParams, useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 function EditUser() {
   const params = useParams();
@@ -11,7 +12,9 @@ function EditUser() {
   useEffect(() => {
     fetch("https://633ac69ee02b9b64c6173ceb.mockapi.io/Users/" + params?.id)
       .then((r) => r.json())
-      .then((data) => setDefaultValues(data))
+      .then((data) =>
+        setDefaultValues({ name: data.name, dob: moment(data.dob), active: data.active })
+      )
       .catch((err) => console.log(err));
   }, []);
 
