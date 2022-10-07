@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Login from "./pages/Login";
+import Header from "./Components/Header";
+import Home from "./pages/Home";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import Users from "./pages/Users";
+import AddUser from "./pages/AddUser";
+import EditUser from "./pages/EditUser";
+import Authorized from "./Components/Authorized";
+import HeaderNameContext from "./context/HeaderName";
+
+const Redirect = () => <Navigate to="/users" replace />;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HeaderNameContext>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route
+            path="/users"
+            element={
+              <Authorized>
+                <Home />
+              </Authorized>
+            }
+          >
+            <Route index element={<Users />} />
+            <Route path="add" element={<AddUser />} />
+            <Route path="edit/:id" element={<EditUser />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Redirect />} />
+        </Routes>
+      </BrowserRouter>
+    </HeaderNameContext>
   );
 }
 
